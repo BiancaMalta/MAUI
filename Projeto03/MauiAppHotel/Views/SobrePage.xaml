@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppHotel.Views.SobrePage"
+             BackgroundColor="#FAF3E0"
+             Title="Sobre">
+
+    <StackLayout>
+
+        <!-- Logo da Página -->
+        <Image Source="about_icon.png" HeightRequest="100" HorizontalOptions="Center" />
+
+        <!-- Título -->
+        <Label Text="Sobre o MauiApp Hotel"
+               FontSize="26"
+               FontAttributes="Bold"
+               TextColor="#3B3B58"
+               HorizontalOptions="Center"/>
+
+        <!-- Caixa de Texto Centralizada -->
+        <Frame BackgroundColor="#FAF3E0"
+               CornerRadius="10"
+               Padding="15"
+               HasShadow="True"
+               BorderColor="#3B3B58"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               WidthRequest="200">
+
+            <Label Text="Este aplicativo foi desenvolvido para facilitar a sua estadia e tornar a experiência de reserva mais prática e agradável."
+                   FontSize="16"
+                   TextColor="#3B3B58"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+        </Frame>
+
+        <!-- Informações do Desenvolvedor -->
+        <StackLayout Spacing="10" HorizontalOptions="Center">
+
+            <!-- Nome do Desenvolvedor -->
+            <Label Text="Desenvolvido por: Bianca"
+                   FontSize="18"
+                   TextColor="#3B3B58"
+                   HorizontalOptions="Center" />
+
+            <!-- Ano de Desenvolvimento -->
+            <Label Text="Ano: 2024"
+                   FontSize="18"
+                   TextColor="#3B3B58"
+                   HorizontalOptions="Center" />
+
+        </StackLayout>
+
+    </StackLayout>
+
+</ContentPage>
+
+

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppHotel.Views.HospedagemContratada"
+             BackgroundColor="#FFF5E1">
+
+    <VerticalStackLayout VerticalOptions="CenterAndExpand"
+                         Padding="10"
+                         Spacing="10">
+
+        <Label Text="{Binding QuartoSelecionado.Descricao}"
+               TextColor="#3B3B58"
+               FontFamily="Arial"
+               FontSize="50"
+               HorizontalTextAlignment="Center"/>
+
+        <Frame Padding="10" BackgroundColor="#FFF5E1" Margin="10">
+            <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="20">
+                <VerticalStackLayout>
+                    <Label Text="Adultos:" TextColor="#3B3B58"/>
+                    <Label Text="{Binding QntAdultos}" TextColor="#3B3B58"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <Label Text="Crianças:" TextColor="#3B3B58"/>
+                    <Label Text="{Binding QntCriancas}" TextColor="#3B3B58"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame Padding="10" BackgroundColor="#FFF5E1" Margin="10">
+            <Grid ColumnDefinitions="*, *, *"
+                  RowDefinitions="Auto, Auto">
+                <Label Grid.Row="0" Grid.Column="0" Text="Check-in:" TextColor="#3B3B58"/>
+                <Label Grid.Row="0" Grid.Column="1" Text="Check-out:" TextColor="#3B3B58"/>
+                <Label Grid.Row="0" Grid.Column="2" Text="Estadia:" TextColor="#3B3B58"/>
+
+                <Label Grid.Row="1" Grid.Column="0" 
+                       Text="{Binding DataCheckIn, StringFormat='{}{0:dd/MM/yyyy}'}"
+                       TextColor="#3B3B58"/>
+
+                <Label Grid.Row="1" Grid.Column="1" 
+                       Text="{Binding DataCheckOut, StringFormat='{}{0:dd/MM/yyyy}'}"
+                       TextColor="#3B3B58"/>
+
+                <Label Grid.Row="1" Grid.Column="2" 
+                       Text="{Binding Estadia}"
+                       TextColor="#3B3B58"/>
+            </Grid>
+        </Frame>
+
+        <Frame Padding="10" BackgroundColor="#FFF5E1" Margin="10">
+            <HorizontalStackLayout HorizontalOptions="CenterAndExpand">
+                <Label Text="Valor Total:" TextColor="#3B3B58"/>
+                <Label Text="{Binding ValorTotal, StringFormat='{}{0:c}'}"
+                       TextColor="#3B3B58"/>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Button Text="Voltar"
+                HorizontalOptions="Center"
+                Clicked="Button_Clicked"
+                BackgroundColor="#FF6F61"
+                TextColor="White"/>
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,55 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppHotel.Views.ContatoSuporte"
+             Title="Contato e Suporte"
+             BackgroundColor="#FAF3E0">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15" VerticalOptions="CenterAndExpand">
+
+            <!-- Título da Página -->
+            <Label Text="Contato e Suporte"
+                   FontSize="24"
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold"
+                   TextColor="#3B3B58"/>
+
+            <!-- Informações de Contato -->
+            <Label Text="Telefone: (11) 1234-5678"
+                   FontSize="18"
+                   TextColor="#3B3B58"/>
+
+            <Label Text="E-mail: suporte@hotel.com"
+                   FontSize="18"
+                   TextColor="#3B3B58"/>
+
+            <Label Text="Endereço: Av. Principal, 100 - Centro, São Paulo, SP"
+                   FontSize="18"
+                   TextColor="#3B3B58"/>
+
+            <!-- Botão para Enviar E-mail -->
+            <Button Text="Enviar E-mail"
+                    FontSize="18"
+                    BackgroundColor="#FF6F61"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnEmailButtonClicked"/>
+
+            <!-- Seção de Perguntas Frequentes (Opcional) -->
+            <Label Text="Perguntas Frequentes"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="#3B3B58"
+                   Margin="0,20,0,0"/>
+
+            <Label Text="• Qual o horário de check-in? R: A partir das 14h."
+                   FontSize="16"
+                   TextColor="#3B3B58"/>
+
+            <Label Text="• Qual o horário de check-out?  R: Até as 12h."
+                   FontSize="16"
+                   TextColor="#3B3B58"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

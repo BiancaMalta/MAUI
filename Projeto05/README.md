@@ -45,5 +45,26 @@ A classe `SQLiteDatabaseHelper` gerencia todas as operações de banco de dados,
 
 - **SQLiteDatabaseHelper(string path)**: Inicializa a conexão com o banco de dados no caminho especificado e cria a tabela `Produto` se não existir.
 
+## Novas Funcionalidades - Agenda 03
+
+### Acesso Centralizado ao Banco de Dados
+- O banco de dados agora é acessado de qualquer parte do app através de App.Db.
+- O arquivo do banco (banco_sqlite_compras.db3) é armazenado no diretório local do dispositivo.
+
+### Interface Aprimorada
+- A tela "Minhas Compras" (antes "ListaProduto") agora inclui botões na Toolbar:
+- Somar (funcionalidade futura).
+- Adicionar (leva à tela de cadastro de produtos).
+
+### Cadastro de Produtos
+- A tela NovoProduto agora possui um formulário com os seguintes campos:
+   - Descrição do Produto (txt_descricao).
+   - Quantidade (txt_quantidade, teclado numérico).
+   - Preço Unitário (txt_preco, teclado numérico).
+
+     
+- Um botão na Toolbar permite salvar o produto no banco de dados.
+- Após a inserção, um alerta de sucesso é exibido.
+
 -------
 

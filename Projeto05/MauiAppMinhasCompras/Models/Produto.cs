@@ -7,6 +7,8 @@ namespace MauiAppMinhasCompras.Models
         private double _quantidade;
         private double _preco;
 
+        public int Id { get; set; }  // Adicionando a propriedade Id
+
         public string Descricao { get; set; }
 
         public double Quantidade
@@ -14,9 +16,12 @@ namespace MauiAppMinhasCompras.Models
             get => _quantidade;
             set
             {
-                _quantidade = value;
-                OnPropertyChanged(nameof(Quantidade));
-                OnPropertyChanged(nameof(TotalPreco));
+                if (_quantidade != value)
+                {
+                    _quantidade = value;
+                    OnPropertyChanged(nameof(Quantidade));
+                    OnPropertyChanged(nameof(TotalPreco));
+                }
             }
         }
 
@@ -25,18 +30,21 @@ namespace MauiAppMinhasCompras.Models
             get => _preco;
             set
             {
-                _preco = value;
-                OnPropertyChanged(nameof(Preco));
-                OnPropertyChanged(nameof(TotalPreco));
+                if (_preco != value)
+                {
+                    _preco = value;
+                    OnPropertyChanged(nameof(Preco));
+                    OnPropertyChanged(nameof(TotalPreco));
+                }
             }
         }
 
         public double TotalPreco => Quantidade * Preco;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string nome)
+        protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nome));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

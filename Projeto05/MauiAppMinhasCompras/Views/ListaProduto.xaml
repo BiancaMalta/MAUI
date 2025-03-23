@@ -10,7 +10,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Somar" />
+        <ToolbarItem Text="Somar" Clicked="SomarPrecos" />
         <ToolbarItem Text="Adicionar" Clicked="ToolbarItem_Clicked" />
     </ContentPage.ToolbarItems>
 
@@ -18,11 +18,24 @@
         <SearchBar Placeholder="Buscar produto..."
                    Text="{Binding TermoBusca, Mode=TwoWay}" />
 
+        <Label Text="Total: R$ {Binding TotalPreco, StringFormat='{0:F2}'}"
+               FontSize="18"
+               FontAttributes="Bold"
+               HorizontalOptions="Center" />
+
         <CollectionView ItemsSource="{Binding ProdutosFiltrados}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="10" Margin="5">
-                        <Label Text="{Binding Descricao}" FontSize="18" />
+                        <StackLayout>
+                            <Label Text="{Binding Descricao}" FontSize="18" />
+                            <Label Text="Preço: R$ {Binding Preco, StringFormat='{0:F2}'}" FontSize="14" />
+                            <Label Text="Quantidade: {Binding Quantidade}" FontSize="14" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ListaProdutoViewModel}}, Path=EditarProdutoCommand}"
+                                                  CommandParameter="{Binding}" />
+                        </Frame.GestureRecognizers>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

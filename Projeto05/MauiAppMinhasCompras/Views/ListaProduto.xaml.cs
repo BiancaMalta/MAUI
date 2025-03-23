@@ -1,29 +1,42 @@
 using MauiAppMinhasCompras.ViewModels;
-using MauiAppMinhasCompras.Models;
 using Microsoft.Maui.Controls;
-using System.Threading.Tasks;
 
 namespace MauiAppMinhasCompras.Views
 {
     public partial class ListaProduto : ContentPage
     {
-        private ListaProdutoViewModel _viewModel;
-
         public ListaProduto()
         {
             InitializeComponent();
-            _viewModel = new ListaProdutoViewModel();
-            BindingContext = _viewModel;
+
+            // Certifique-se de que não está sobrescrevendo o BindingContext se já definido no XAML
+            if (BindingContext is not ListaProdutoViewModel)
+            {
+                BindingContext = new ListaProdutoViewModel();
+            }
         }
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NovoProduto(_viewModel));
+            try
+            {
+                if (BindingContext is ListaProdutoViewModel viewModel)
+                {
+                    Navigation.PushAsync(new NovoProduto(viewModel));
+                }
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Erro", ex.Message, "OK");
+            }
         }
 
         private void SomarPrecos(object sender, EventArgs e)
         {
-            DisplayAlert("Total", $"O total dos produtos é: R$ {_viewModel.TotalPreco:F2}", "OK");
+            if (BindingContext is ListaProdutoViewModel viewModel)
+            {
+                DisplayAlert("Total", $"O total dos produtos é: R$ {viewModel.TotalPreco:F2}", "OK");
+            }
         }
     }
 }

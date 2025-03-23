@@ -18,19 +18,33 @@
         <SearchBar Placeholder="Buscar produto..."
                    Text="{Binding TermoBusca, Mode=TwoWay}" />
 
-        <Label Text="Total: R$ {Binding TotalPreco, StringFormat='{0:F2}'}"
-               FontSize="18"
-               FontAttributes="Bold"
-               HorizontalOptions="Center" />
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Total: R$ " />
+                    <Span Text="{Binding TotalPreco, StringFormat='{0:F2}'}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
 
         <CollectionView ItemsSource="{Binding ProdutosFiltrados}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="10" Margin="5">
-                        <StackLayout>
-                            <Label Text="{Binding Descricao}" FontSize="18" />
-                            <Label Text="Preço: R$ {Binding Preco, StringFormat='{0:F2}'}" FontSize="14" />
-                            <Label Text="Quantidade: {Binding Quantidade}" FontSize="14" />
+                        <StackLayout Spacing="5">
+                            <Label Text="{Binding Descricao}" 
+           FontSize="18" 
+           FontAttributes="Bold"
+           LineBreakMode="WordWrap"
+           MaxLines="2" />
+
+                            <Label Text="{Binding Preco, StringFormat='PreÃ§o: R$ {0:F2}'}" 
+           FontSize="14"
+           TextColor="Green" />
+
+                            <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" 
+           FontSize="14"
+           TextColor="Gray" />
                         </StackLayout>
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ListaProdutoViewModel}}, Path=EditarProdutoCommand}"

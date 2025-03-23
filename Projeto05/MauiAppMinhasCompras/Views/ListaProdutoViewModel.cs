@@ -3,7 +3,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using MauiAppMinhasCompras.Models;
+using MauiAppMinhasCompras.Views;
+using Microsoft.Maui.Controls;
 
 namespace MauiAppMinhasCompras.ViewModels
 {
@@ -12,6 +15,7 @@ namespace MauiAppMinhasCompras.ViewModels
         private ObservableCollection<Produto> _produtos;
         private ObservableCollection<Produto> _produtosFiltrados;
         private string _termoBusca = string.Empty;
+        private double _totalPreco;
 
         public ObservableCollection<Produto> ProdutosFiltrados
         {
@@ -20,6 +24,7 @@ namespace MauiAppMinhasCompras.ViewModels
             {
                 _produtosFiltrados = value;
                 OnPropertyChanged();
+                AtualizarTotal();
             }
         }
 
@@ -37,10 +42,23 @@ namespace MauiAppMinhasCompras.ViewModels
             }
         }
 
+        public double TotalPreco
+        {
+            get => _totalPreco;
+            set
+            {
+                _totalPreco = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand EditarProdutoCommand { get; }
+
         public ListaProdutoViewModel()
         {
             _produtos = new ObservableCollection<Produto>();
             _produtosFiltrados = new ObservableCollection<Produto>();
+            EditarProdutoCommand = new Command<Produto>(EditarProduto);
             CarregarProdutos();
         }
 
@@ -64,6 +82,25 @@ namespace MauiAppMinhasCompras.ViewModels
                     .ToList();
                 ProdutosFiltrados = new ObservableCollection<Produto>(filtro);
             }
+        }
+
+        private void AtualizarTotal()
+        {
+            TotalPreco = ProdutosFiltrados.Sum(p => p.Preco * p.Quantidade);
+        }
+
+        private async void EditarProduto(Produto produto)
+        {
+            if (produto != null)
+            {
+                await Application.Current.MainPage.Navigation.PushAsync(new EditarProduto(produto));
+            }
+        }
+
+        public async Task AdicionarProduto(Produto produto)
+        {
+            await App.Db.Insert(produto);
+            CarregarProdutos();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

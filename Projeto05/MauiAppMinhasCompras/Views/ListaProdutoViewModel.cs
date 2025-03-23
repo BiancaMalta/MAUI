@@ -59,14 +59,21 @@ namespace MauiAppMinhasCompras.ViewModels
             _produtos = new ObservableCollection<Produto>();
             _produtosFiltrados = new ObservableCollection<Produto>();
             EditarProdutoCommand = new Command<Produto>(EditarProduto);
-            CarregarProdutos();
+
+            // Chama o método de carregamento de forma assíncrona após a construção
+            InitializeAsync();
         }
 
-        private async void CarregarProdutos()
+        private async void InitializeAsync()
+        {
+            await CarregarProdutos();
+        }
+
+        private async Task CarregarProdutos()
         {
             var lista = await App.Db.GetAll();
             _produtos = new ObservableCollection<Produto>(lista);
-            ProdutosFiltrados = new ObservableCollection<Produto>(_produtos);
+            ProdutosFiltrados = new ObservableCollection<Produto>(_produtos); // Garante que a UI seja atualizada
         }
 
         private void FiltrarProdutos()
@@ -100,7 +107,7 @@ namespace MauiAppMinhasCompras.ViewModels
         public async Task AdicionarProduto(Produto produto)
         {
             await App.Db.Insert(produto);
-            CarregarProdutos();
+            await CarregarProdutos(); // Recarrega após adicionar
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

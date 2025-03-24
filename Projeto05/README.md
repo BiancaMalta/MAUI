@@ -97,6 +97,21 @@ Este projeto demonstra como implementar uma funcionalidade de busca dinâmica de
    - O `CollectionView` se atualiza automaticamente à medida que os dados na `ObservableCollection` mudam, garantindo uma experiência de usuário fluida e interativa.
 
 </details>
+<details>
+  <summary>Agenda 05</summary>
+
+### Funcionalidades Implementadas
+1. **Tratamento de Exceções**
+    - O bloco try-catch é usado para garantir que a aplicação continue funcionando em caso de erro, exibindo mensagens amigáveis ao usuário.
+
+2. **Menu de Contexto**
+    - Foi adicionado um Menu de Contexto à ListView, permitindo ações como Excluir, com a opção destacada como destrutiva.
+
+3. **Exibição de Alertas**
+    - A funcionalidade DisplayAlert exibe mensagens de confirmação ou erro, retornando um valor booleano para definir a ação do usuário.
+
+4. **Navegação e Edição de Produtos**
+    - O evento ItemSelected permite a navegação para uma tela de detalhes, e o método EditarProduto atualiza os dados no banco com a ajuda de try-catch para capturar possíveis erros.
 
 -------
 

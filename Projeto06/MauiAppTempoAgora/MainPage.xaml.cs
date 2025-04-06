@@ -1,64 +1,51 @@
 using MauiAppTempoAgora.Models;
-using Newtonsoft.Json.Linq;
-using System.Net;
+using MauiAppTempoAgora.Services;
 
-namespace MauiAppTempoAgora.Services
+namespace MauiAppTempoAgora
 {
-    public class DataService
+    public partial class MainPage : ContentPage
     {
-        public static async Task<Tempo?> GetPrevisao(string cidade)
+        public MainPage()
         {
-            Tempo? t = null;
+            InitializeComponent();
+        }
 
-            string chave = "a36401d440ad5c895a2da8772f6a91da";
-            string url = $"https://api.openweathermap.org/data/2.5/weather?" +
-                         $"q={cidade}&units=metric&appid={chave}";
-
-            using (HttpClient client = new HttpClient())
+        private async void Button_Clicked(object sender, EventArgs e)
+        {
+            try
             {
-                HttpResponseMessage resp;
-
-                try
+                if (!string.IsNullOrEmpty(txt_cidade.Text))
                 {
-                    resp = await client.GetAsync(url);
-                }
-                catch (HttpRequestException)
-                {
-                    throw new Exception("Sem conexão com a internet.");
-                }
+                    Tempo? t = await DataService.GetPrevisao(txt_cidade.Text);
 
-                if (resp.StatusCode == HttpStatusCode.NotFound)
-                {
-                    throw new Exception("Cidade não encontrada. Verifique o nome digitado.");
-                }
-
-                if (resp.IsSuccessStatusCode)
-                {
-                    string json = await resp.Content.ReadAsStringAsync();
-
-                    var rascunho = JObject.Parse(json);
-
-                    DateTime time = new();
-                    DateTime sunrise = time.AddSeconds((double)rascunho["sys"]["sunrise"]).ToLocalTime();
-                    DateTime sunset = time.AddSeconds((double)rascunho["sys"]["sunset"]).ToLocalTime();
-
-                    t = new()
+                    if (t != null)
                     {
-                        lat = (double)rascunho["coord"]["lat"],
-                        lon = (double)rascunho["coord"]["lon"],
-                        main = (string)rascunho["weather"][0]["main"],
-                        description = (string)rascunho["weather"][0]["description"],
-                        temp_min = (double)rascunho["main"]["temp_min"],
-                        temp_max = (double)rascunho["main"]["temp_max"],
-                        speed = (double)rascunho["wind"]["speed"],
-                        visibility = (int)rascunho["visibility"],
-                        sunrise = sunrise.ToString(),
-                        sunset = sunset.ToString(),
-                    };
+                        string dados_previsao = $"Latitude: {t.lat} \n" +
+                                                $"Longitude: {t.lon} \n" +
+                                                $"Nascer do Sol: {t.sunrise} \n" +
+                                                $"Por do Sol: {t.sunset} \n" +
+                                                $"Temp Máx: {t.temp_max} \n" +
+                                                $"Temp Min: {t.temp_min} \n" +
+                                                $"Descrição: {t.description} \n" +
+                                                $"Velocidade do vento: {t.speed} \n" +
+                                                $"Visibilidade: {t.visibility} \n";
+
+                        lbl_res.Text = dados_previsao;
+                    }
+                    else
+                    {
+                        lbl_res.Text = "Sem dados de Previsão";
+                    }
+                }
+                else
+                {
+                    lbl_res.Text = "Preencha a cidade.";
                 }
             }
-
-            return t;
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "OK");
+            }
         }
     }
 }

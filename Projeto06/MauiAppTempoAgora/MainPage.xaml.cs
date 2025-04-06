@@ -1,58 +1,64 @@
-﻿using MauiAppTempoAgora.Models;
-using MauiAppTempoAgora.Services;
+using MauiAppTempoAgora.Models;
+using Newtonsoft.Json.Linq;
+using System.Net;
 
-namespace MauiAppTempoAgora
+namespace MauiAppTempoAgora.Services
 {
-    public partial class MainPage : ContentPage
+    public class DataService
     {
-        int count = 0;
-
-        public MainPage()
+        public static async Task<Tempo?> GetPrevisao(string cidade)
         {
-            InitializeComponent();
-        }
+            Tempo? t = null;
 
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
-            try
+            string chave = "a36401d440ad5c895a2da8772f6a91da";
+            string url = $"https://api.openweathermap.org/data/2.5/weather?" +
+                         $"q={cidade}&units=metric&appid={chave}";
+
+            using (HttpClient client = new HttpClient())
             {
-                if(!string.IsNullOrEmpty(txt_cidade.Text))
+                HttpResponseMessage resp;
+
+                try
                 {
-                    Tempo? t = await DataService.GetPrevisao(txt_cidade.Text);
-
-                    if(t != null) 
-                    {
-                        string dados_previsao = "";
-
-                        dados_previsao = $"Latitude: {t.lat} \n" +
-                                         $"Longitude: {t.lon} \n" +
-                                         $"Nascer do Sol: {t.sunrise} \n" +
-                                         $"Por do Sol: {t.sunset} \n" +
-                                         $"Temp Máx: {t.temp_max} \n" +
-                                         $"Temp Min: {t.temp_min} \n";
-                                         $"Descrição: {t.description} \n" +
-                                         $"Velocidade do vento: {t.speed} \n" +
-                                         $"Visibilidade: {t.visibility} \n";
-                                         
-
-                        lbl_res.Text = dados_previsao;
-
-                    } else
-                    {
-
-                        lbl_res.Text = "Sem dados de Previsão";
-                    }
-
-                } else
+                    resp = await client.GetAsync(url);
+                }
+                catch (HttpRequestException)
                 {
-                    lbl_res.Text = "Preencha a cidade.";
+                    throw new Exception("Sem conexão com a internet.");
                 }
 
-            } catch(Exception ex)
-            {
-                await DisplayAlert("Ops", ex.Message, "OK");
+                if (resp.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new Exception("Cidade não encontrada. Verifique o nome digitado.");
+                }
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    string json = await resp.Content.ReadAsStringAsync();
+
+                    var rascunho = JObject.Parse(json);
+
+                    DateTime time = new();
+                    DateTime sunrise = time.AddSeconds((double)rascunho["sys"]["sunrise"]).ToLocalTime();
+                    DateTime sunset = time.AddSeconds((double)rascunho["sys"]["sunset"]).ToLocalTime();
+
+                    t = new()
+                    {
+                        lat = (double)rascunho["coord"]["lat"],
+                        lon = (double)rascunho["coord"]["lon"],
+                        main = (string)rascunho["weather"][0]["main"],
+                        description = (string)rascunho["weather"][0]["description"],
+                        temp_min = (double)rascunho["main"]["temp_min"],
+                        temp_max = (double)rascunho["main"]["temp_max"],
+                        speed = (double)rascunho["wind"]["speed"],
+                        visibility = (int)rascunho["visibility"],
+                        sunrise = sunrise.ToString(),
+                        sunset = sunset.ToString(),
+                    };
+                }
             }
+
+            return t;
         }
     }
-
 }

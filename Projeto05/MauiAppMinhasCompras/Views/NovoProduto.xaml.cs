@@ -1,39 +1,34 @@
 using MauiAppMinhasCompras.Models;
-using MauiAppMinhasCompras.ViewModels;
-using Microsoft.Maui.Controls;
 
-namespace MauiAppMinhasCompras.Views
+namespace MauiAppMinhasCompras.Views;
+
+public partial class NovoProduto : ContentPage
 {
-    public partial class NovoProduto : ContentPage
+    public NovoProduto()
     {
-        private ListaProdutoViewModel _viewModel;
+        InitializeComponent();
+    }
 
-        public NovoProduto(ListaProdutoViewModel viewModel)
+    private async void ToolbarItem_Clicked(object sender, EventArgs e)
+    {
+        try
         {
-            InitializeComponent();
-            _viewModel = viewModel;
+            Produto p = new Produto
+            {
+                Categoria = txt_categoria.Text,
+                Descricao = txt_descricao.Text,
+                Quantidade = Convert.ToDouble(txt_quantidade.Text),
+                Preco = Convert.ToDouble(txt_preco.Text)
+            };
+
+            await App.Db.Insert(p);
+            await DisplayAlert("Sucesso!", "Registro Inserido", "OK");
+            await Navigation.PopAsync();
+
         }
-
-        private async void ToolbarItem_Clicked(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            try
-            {
-                Produto p = new Produto
-                {   
-                    Categoria = txt_categoria.Text,
-                    Descricao = txt_descricao.Text,
-                    Quantidade = Convert.ToDouble(txt_quantidade.Text),
-                    Preco = Convert.ToDouble(txt_preco.Text)
-                };
-
-                await _viewModel.AdicionarProduto(p);
-                await DisplayAlert("Sucesso!", "Registro Inserido", "OK");
-                await Navigation.PopAsync(); // Fecha a tela ao salvar
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Ops", ex.Message, "OK");
-            }
+            await DisplayAlert("Ops", ex.Message, "OK");
         }
     }
 }

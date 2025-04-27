@@ -46,5 +46,7 @@ namespace MauiAppMinhasCompras.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public string Categoria { get; set; }
     }
 }

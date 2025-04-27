@@ -43,5 +43,19 @@ namespace MauiAppMinhasCompras.Helpers
 
             return _conn.QueryAsync<Produto>(sql);
         }
+        public Task<List<Produto>> SearchByCategory(string categoria)
+         {
+             string sql = "SELECT * FROM Produto WHERE Categoria = ?";
+             return _conn.QueryAsync<Produto>(sql, categoria);
+         }
+ 
+         public async Task<Dictionary<string, double>> GetTotalByCategory()
+         {
+             List<Produto> produtos = await GetAll();
+             return produtos
+                 .Where(p => !string.IsNullOrEmpty(p.Categoria))
+                 .GroupBy(p => p.Categoria)
+                 .ToDictionary(g => g.Key, g => g.Sum(p => p.Total));
+         }
     }
 }

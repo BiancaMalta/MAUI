@@ -113,5 +113,33 @@ Este projeto demonstra como implementar uma funcionalidade de busca dinâmica de
 4. **Navegação e Edição de Produtos**
     - O evento ItemSelected permite a navegação para uma tela de detalhes, e o método EditarProduto atualiza os dados no banco com a ajuda de try-catch para capturar possíveis erros.
 
+</details>
+<details>
+  <summary>Agenda 06</summary>
+
+### Funcionalidades Implementadas
+
+1. **Campo "Categoria" adicionado**:
+    - No modelo `Produto`, agora é possível definir a categoria de cada produto.
+    - As telas de **novo produto** e **editar produto** foram atualizadas para incluir um campo de entrada de categoria.
+
+  2. **Novas funcionalidades no banco de dados**:
+     - `SearchByCategory(categoria)`: busca produtos filtrados pela categoria informada.
+     - `GetTotalByCategory()`: retorna o total gasto por categoria em formato de dicionário.
+
+### Arquivos modificados
+
+- `Models/Produto.cs` → Adição do atributo `Categoria`.
+- `Views/EditarProduto.xaml` → Campo de entrada para a categoria.
+- `Views/EditarProduto.xaml.cs` → Atualização do salvamento para incluir a categoria.
+- `Helpers/SQLiteDatabaseHelper.cs` → Novos métodos de busca e totalização por categoria.
+
+### Impacto
+
+Essas atualizações permitem:
+- Melhor organização dos produtos por categoria.
+- Relatórios financeiros básicos baseados em categorias.
+- Experiência de edição e adição de produtos mais completa.
+
 -------
 

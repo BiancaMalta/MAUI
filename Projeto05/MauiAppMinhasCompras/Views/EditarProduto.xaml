@@ -9,6 +9,9 @@
     </ContentPage.ToolbarItems>
 
     <VerticalStackLayout Padding="10" Spacing="10">
+        <Label Text="Categoria:" />
+        <Entry x:Name="txt_categoria" Text="{Binding Categoria}" />
+
         <Label Text="Descrição do Produto:" />
         <Entry Text="{Binding Descricao}" />
 

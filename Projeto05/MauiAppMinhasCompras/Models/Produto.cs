@@ -1,52 +1,29 @@
-using System.ComponentModel;
+using SQLite;
 
 namespace MauiAppMinhasCompras.Models
 {
-    public class Produto : INotifyPropertyChanged
+    public class Produto
     {
-        private double _quantidade;
-        private double _preco;
+        string _descricao;
 
-        public int Id { get; set; }  // Adicionando a propriedade Id
-
-        public string Descricao { get; set; }
-
-        public double Quantidade
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+        public string Descricao
         {
-            get => _quantidade;
+            get => _descricao;
             set
             {
-                if (_quantidade != value)
+                if (value == null)
                 {
-                    _quantidade = value;
-                    OnPropertyChanged(nameof(Quantidade));
-                    OnPropertyChanged(nameof(TotalPreco));
+                    throw new Exception("Por favor, preencha a descrição");
                 }
+
+                _descricao = value;
             }
         }
-
-        public double Preco
-        {
-            get => _preco;
-            set
-            {
-                if (_preco != value)
-                {
-                    _preco = value;
-                    OnPropertyChanged(nameof(Preco));
-                    OnPropertyChanged(nameof(TotalPreco));
-                }
-            }
-        }
-
-        public double TotalPreco => Quantidade * Preco;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        public double Quantidade { get; set; }
+        public double Preco { get; set; }
+        public double Total { get => Quantidade * Preco; }
         public string Categoria { get; set; }
     }
 }

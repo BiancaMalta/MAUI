@@ -23,6 +23,46 @@ public partial class ListaProduto : ContentPage
             List<Produto> tmp = await App.Db.GetAll();
 
             tmp.ForEach(i => lista.Add(i));
+
+            var categorias = tmp.Select(p => p.Categoria).Distinct().ToList();
+            picker_categoria.ItemsSource = categorias;
+            picker_categoria.SelectedIndex = -1;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
+    }
+
+    private async void btnLimparFiltro_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            // Limpa a seleção do picker
+            picker_categoria.SelectedIndex = -1;
+
+            // Recarrega todos os produtos na lista
+            lista.Clear();
+            List<Produto> tmp = await App.Db.GetAll();
+            tmp.ForEach(i => lista.Add(i));
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
+    }
+
+    private async void picker_categoria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string categoriaSelecionada = picker_categoria.SelectedItem as string;
+            if (categoriaSelecionada != null)
+            {
+                lista.Clear();
+                List<Produto> tmp = await App.Db.SearchByCategory(categoriaSelecionada);
+                tmp.ForEach(i => lista.Add(i));
+            }
         }
         catch (Exception ex)
         {
@@ -35,6 +75,7 @@ public partial class ListaProduto : ContentPage
         try
         {
             Navigation.PushAsync(new Views.NovoProduto());
+
         }
         catch (Exception ex)
         {
@@ -47,7 +88,6 @@ public partial class ListaProduto : ContentPage
         try
         {
             string q = e.NewTextValue;
-            string categoria = categoriaPicker.SelectedItem?.ToString();
 
             lst_produtos.IsRefreshing = true;
 
@@ -137,38 +177,18 @@ public partial class ListaProduto : ContentPage
         }
     }
 
-    private async void categoriaPicker_SelectedIndexChanged(object sender, EventArgs e)
+    private async void btnRelatorio_Clicked(object sender, EventArgs e)
     {
         try
         {
-            string categoria = categoriaPicker.SelectedItem?.ToString();
-            string q = txt_search.Text;
+            var relatorio = await App.Db.GetTotalByCategory();
+            string msg = string.Join("\n", relatorio.Select(r => $"{r.Key}: {r.Value:C}"));
 
-            lista.Clear();
-
-            List<Produto> tmp = await App.Db.GetAll();
-
-            if (!string.IsNullOrEmpty(q))
-            {
-                tmp = tmp.Where(p => p.Descricao.Contains(q)).ToList();
-            }
-
-            if (categoria != null && categoria != "Todos")
-            {
-                tmp = tmp.Where(p => p.Categoria == categoria).ToList();
-            }
-
-            tmp.ForEach(i => lista.Add(i));
+            await DisplayAlert("Relatório de Gastos", msg, "OK");
         }
         catch (Exception ex)
         {
             await DisplayAlert("Ops", ex.Message, "OK");
         }
     }
-    private async void OnVerRelatorioClicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new RelatorioPage());
-    }
 }
-
-
